@@ -18,7 +18,7 @@ class Envios extends Controller
     public function index($pag = 1)
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         // comprueba si existe en sesion variables campos para filtrar busqueda
         $filtro = $this->compruebaFiltro();
@@ -31,7 +31,7 @@ class Envios extends Controller
         
         $pagination = $this->pagination($pag, $totalRows);
         
-        $envios = $envios_model->getPagEnvios(isset($filtro) ? $filtro : null, $pagination['offset'], null, $_SESSION['usuario_zona']);
+        $envios = $envios_model->getPagEnvios(isset($filtro) ? $filtro : null, $pagination['offset'], null);
         $zona = $zona_model->getZona($_SESSION['usuario_zona']);
         $zonas = $zona_model->getZonas();
         
@@ -101,7 +101,7 @@ class Envios extends Controller
     public function add()
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         // cargamos el modelo y realizamos la acción
         $envios_model = $this->loadModel('EnviosModel');
@@ -135,7 +135,7 @@ class Envios extends Controller
     public function add_accion()
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         if (isset($_REQUEST['add_accion'])) {
             // cargamos el modelo y realizamos la acción
@@ -183,7 +183,7 @@ class Envios extends Controller
     public function eliminar($envio_id)
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         // si existe $envio_id
         if (isset($envio_id)) {
@@ -217,7 +217,7 @@ class Envios extends Controller
     public function eliminar_accion($envio_id)
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         // cargamos el modelo
         $envios_model = $this->loadModel('EnviosModel');
@@ -250,7 +250,7 @@ class Envios extends Controller
     public function editar($envio_id = NULL)
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         // si existe $envio_id
         if (isset($envio_id)) {
@@ -258,7 +258,7 @@ class Envios extends Controller
             $envios_model = $this->loadModel('EnviosModel');
             $zona_model = $this->loadModel('ZonaModel');
             // obtenemos datos del envío a editar
-            $data['datos'] = $envios_model->getEnvio($envio_id, session::get('usuario_zona'));
+            $data['datos'] = $envios_model->getEnvio($envio_id);
             $zona = $zona_model->getZona(session::get('usuario_zona'));
             $zonas = $zona_model->getZonas();
             
@@ -291,7 +291,7 @@ class Envios extends Controller
     public function editar_accion()
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         // Llamada desde formulario editar para guardar cambios
         if (isset($_REQUEST['editar_accion'])) {
@@ -344,13 +344,13 @@ class Envios extends Controller
     public function anotar($envio_id = NULL)
     { 
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         if (! is_null($envio_id)) {
             $envios_model = $this->loadModel('EnviosModel');
             $zona_model = $this->loadModel('Zonamodel');
             // obtenemos datos del envío a editar
-            $data['datos'] = $envios_model->getEnvio($envio_id, $_SESSION['usuario_zona']);
+            $data['datos'] = $envios_model->getEnvio($envio_id);
             // obtenemos listado de provincias
             $provincias = $envios_model->getAllProvincias();
             
@@ -381,7 +381,7 @@ class Envios extends Controller
     public function anotar_accion()
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         if (isset($_REQUEST['anotar_accion'])) {
             // cargamos el modelo
@@ -396,7 +396,7 @@ class Envios extends Controller
                 header('location: ' . URL . 'envios/index');
             } else {
                 // obtenemos datos del envío a editar y añadimos a datos del usuario que estamos editando
-                $data['datos'] = $envios_model->getEnvio($_REQUEST['id_envio'], session::get('usuario_zona'));
+                $data['datos'] = $envios_model->getEnvio($_REQUEST['id_envio']);
                 foreach ($dataAnotar['datos'] as $key => $value) {
                     $data['datos'][$key] = $value;
                 }
@@ -437,7 +437,7 @@ class Envios extends Controller
     public function consulta()
     {
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         if (isset($_REQUEST['consulta'])) {
             
@@ -451,7 +451,7 @@ class Envios extends Controller
                 // cargamos el modelo
                 $envios_model = $this->loadModel('EnviosModel');
                 // obtenemos datos del envío a editar
-                $data['datos'] = $envios_model->getEnvio($id_envio, $_SESSION['usuario_zona']);
+                $data['datos'] = $envios_model->getEnvio($id_envio);
                 // obtenemos listado de provincias
                 $provincias = $envios_model->getAllProvincias();
                 $zona_model = $this->loadModel('Zonamodel');
@@ -524,9 +524,8 @@ class Envios extends Controller
             'apellido2' => 'texto',
             'razonsocial' => 'alfanum',
             'telefono1' => 'telefono',
-            'telefono2' => 'telefono',
-            'zona_entrega' => 'numerico',
-            'zona_recepcion' => 'numerico'
+            'telefono2' => 'telefono'
+          
         );
         
         return $formEnvio;

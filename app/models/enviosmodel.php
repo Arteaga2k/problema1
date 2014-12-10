@@ -40,12 +40,12 @@ class EnviosModel
      * @param unknown $id_zona            
      * @return multitype:
      */
-    public function getEnvios($id_zona)
+    public function getEnvios()
     {
-        $this->binds[':zona_recepcion'] = $id_zona;
-        $this->mysqlDB->setBinds($this->binds);
+        //$this->binds[':zona_recepcion'] = $id_zona;
+       // $this->mysqlDB->setBinds($this->binds);
         $result = $this->mysqlDB->select()
-            ->where('zona_recepcion')
+           // ->where('zona_recepcion')
             ->from($this->table)
             ->fetchAll();
         
@@ -56,22 +56,22 @@ class EnviosModel
     /**
      * Obtener todos los envios de la tabla Envios
      */
-    public function getPagEnvios($filtro = NULL, $offset = 0, $count = NULL, $id_zona)
+    public function getPagEnvios($filtro = NULL, $offset = 0, $count = NULL)
     {
         if (is_null($filtro) || empty($filtro)) {
             
-            $this->binds[':zona_recepcion'] = $id_zona;
+           // $this->binds[':zona_recepcion'] = $id_zona;
             
-            $this->mysqlDB->setBinds($this->binds);
+           // $this->mysqlDB->setBinds($this->binds);
             
             $result = $this->mysqlDB->select()
                 ->limit("$offset," . session::get('REGS_PAG'))
-                ->where('zona_recepcion')
+               // ->where('zona_recepcion')
                 ->from($this->table)
                 ->fetchAll();
         } else {
-            $this->binds['zona_recepcion'] = $id_zona;
-            $this->setFiltros($filtro, $id_zona);
+           // $this->binds['zona_recepcion'] = $id_zona;
+            $this->setFiltros($filtro);
             $this->mysqlDB->select()
                 ->limit("$offset," . session::get('REGS_PAG'))
                 ->from($this->table)
@@ -87,7 +87,7 @@ class EnviosModel
     /**
      * Guarda y bindea campos de busqueda
      */
-    public function setFiltros($filtro, $id_zona)
+    public function setFiltros($filtro)
     {
         
         // existe filtro campo texto
@@ -123,7 +123,7 @@ class EnviosModel
                 'fec_creacion' => '<='
             ));
         }
-        $this->mysqlDB->where('zona_recepcion');
+       // $this->mysqlDB->where('zona_recepcion');
         
         $this->mysqlDB->setBinds($this->binds);
     }
@@ -148,15 +148,15 @@ class EnviosModel
      *            identificador de la tabla
      * @return mixed
      */
-    public function getEnvio($id_envio, $id_zona)
+    public function getEnvio($id_envio)
     {
         $this->binds['id_envio'] = $id_envio;
-        $this->binds['zona_recepcion'] = $id_zona;
+       // $this->binds['zona_recepcion'] = $id_zona;
         
         $this->mysqlDB->setBinds($this->binds);
         
         $result = $this->mysqlDB->where('id_envio')
-            ->where('zona_recepcion')
+            //->where('zona_recepcion')
             ->select()
             ->from($this->table)
             ->fetch();
@@ -171,11 +171,17 @@ class EnviosModel
      */
     public function addEnvio($dataForm)
     {
+        $dataForm['zona_entrega'] = 2;
+        $dataForm['zona_recepcion'] = 2;
         
         // bindeamos parametros
         foreach ($dataForm as $key => $value) {
             $this->binds[":$key"] = $value;
         }
+        /*$this->binds[":zona_entrega"] = 2;
+        $this->binds[":zona_recepcion"] = 2;*/
+       
+        var_dump($dataForm); //$dataForm
         
         $this->mysqlDB->setBinds($this->binds);
         $this->mysqlDB->insert($this->table, $dataForm);
@@ -254,18 +260,18 @@ class EnviosModel
      *
      * @return Ambigous <>
      */
-    public function getTotalRows($filtro, $id_zona)
+    public function getTotalRows($filtro)
     {
         if (is_null($filtro) || empty($filtro)) {
-            $this->binds[':zona_recepcion'] = $id_zona;
+          // $this->binds[':zona_recepcion'] = $id_zona;
             $this->mysqlDB->setBinds($this->binds);
             $result = $this->mysqlDB->select("COUNT(*) as total")
-                ->where('zona_recepcion')
+               // ->where('zona_recepcion')
                 ->from($this->table)
                 ->fetch();
         } else {
-            $this->binds['zona_recepcion'] = $id_zona;
-            $this->setFiltros($filtro, $id_zona);
+          //  $this->binds['zona_recepcion'] = $id_zona;
+            $this->setFiltros($filtro);
             $result = $this->mysqlDB->select("COUNT(*) as total")
                 ->from($this->table)
                 ->fetch();

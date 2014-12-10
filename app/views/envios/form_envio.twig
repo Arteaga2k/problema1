@@ -154,31 +154,6 @@
 		</div>
 	</div>
 
-	<div
-		class="form-group {% if errores.zona_entrega|length -%} has-error {%- endif -%}">
-		<label for="zona_entrega" class="col-sm-2 control-label">Zona Envío</label>
-		<div class="col-sm-10">
-			<select class="form-control" name="zona_entrega" id="zona_entrega"{{accion|lower == 'anotar_accion' or  accion|lower == 'consulta' ? 'disabled' : '' -}}>
-				{% for zona in zonas %}
-				<option value="{{ zona.id_zona }}"{{ zona.nombrezona|lower == zona_usuario|lower ? "selected='selected'": '' -}}>{{
-					zona.nombrezona }}</option> {% endfor %}
-			</select>
-		</div>
-	</div>
-	<div
-		class="form-group {% if errores.zona_recepcion|length -%} has-error {%- endif -%}">
-		<label for="zona_recepcion" class="col-sm-2 control-label">Zona
-			Recepción</label>
-		<div class="col-sm-10">
-			<select class="form-control" name="zona_recepcion"
-				id="zona_recepcion"{{ accion|lower == 'anotar_accion' or  accion|lower == 'consulta' ? 'disabled' : '' -}}>
-				{% for zona in zonas %}
-				<option value="{{- zona.id_zona -}}"{{ zona.nombrezona|lower == zona_usuario|lower ? "selected='selected'": '' -}}>{{-
-					zona.nombrezona -}}</option> {%- endfor -%}
-			</select>
-		</div>
-	</div>
-
 <hr />
 	<div
 		class="form-group {% if errores.observaciones|length -%} has-error {%- endif -%}">

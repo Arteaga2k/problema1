@@ -2,7 +2,7 @@
         /**
         * Configuración: La URL del proyecto problema1
         */
-        define('URL', 'http://localhost/problema3/');
+        define('URL', 'http://localhost/problema1/');
         
         
         

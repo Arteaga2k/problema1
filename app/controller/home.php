@@ -18,7 +18,7 @@ class Home extends Controller
     public function index()
     {    
         // estamos logueado?
-        Autorizacion::checkLogin();
+        //Autorizacion::checkLogin();
         
         $envios_model = $this->loadModel('EnviosModel');
         $zona_model = $this->loadModel('ZonaModel');
